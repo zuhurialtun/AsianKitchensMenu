@@ -80,4 +80,91 @@ const menu = [
       "https://www.justonecookbook.com/wp-content/uploads/2011/10/Dorayaki-New-500x400.jpg",
     desc: `Red bean paste dessert, serving with honey.`,
   },
+  {
+    id: 10,
+    title: "Yaprak dolma",
+    category: "Turkey",
+    price: 4.99,
+    img:
+      "https://dynaimage.cdn.cnn.com/cnn/q_auto,w_1100,c_fill,g_auto,h_619,ar_16:9/http%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F200401171739-06-best-turkish-foods-yaprak-dolma.jpg",
+    desc: `This traditional dish is essentially vine leaves rolled and filled with either well-seasoned rice or mincemeat.`,
+  },
+  {
+    id: 11,
+    title: "Iskender kebab",
+    category: "Turkey",
+    price: 7.99,
+    img:
+      "https://dynaimage.cdn.cnn.com/cnn/q_auto,w_634,c_fill,g_auto,h_357,ar_16:9/http%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F200401171826-08-best-turkish-foods-iskender-kebab.jpg",
+    desc: `Iskender kebab is named after İskender Efendi, the man who invented the dish.`,
+  },
+  {
+    id: 12,
+    title: "Manti",
+    category: "Turkey",
+    price: 3.99,
+    img:
+      "https://dynaimage.cdn.cnn.com/cnn/q_auto,w_634,c_fill,g_auto,h_357,ar_16:9/http%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F200401172027-12-best-turkish-foods-manti.jpg",
+    desc: `The most coveted version of these tasty Turkish dumplings are made in Kayseri, Central Anatolia.`,
+  },
+  {
+    id: 13,
+    title: "Lahmacun",
+    category: "Turkey",
+    price: 1.99,
+    img:
+      "https://dynaimage.cdn.cnn.com/cnn/q_auto,w_634,c_fill,g_auto,h_357,ar_16:9/http%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F200402101927-18-best-turkish-foods-lahmacun.jpg",
+    desc: `Lahmacun is commonly referred to as Turkish Pizza.`,
+  },
 ];
+
+let menuButtonsDOM = document.querySelector('.btn-container') // Menu kategorilerinin olduğu div
+let categoryList = [] // Menu kategorilerinin ekleneceği array
+menu.map(function(element){ // menu.map kullanarak tek tek menu elemanlarını çağırıyor ve kategorilerinin kategori listesinde olup olmadığı durumuna göre kategori listesine ekliyoruz
+  if(!categoryList.includes(element.category)){
+    categoryList.push(element.category)
+  }
+})
+
+categoryList.map(function(element){ // Kategori listesi alınıyor ve Butonlara dönüştürülüyor
+  menuButtonsDOM.innerHTML += `<button class="btn btn-outline-dark btn-item" data-id="${element}">${element}</button>`
+})
+
+let buttonsDOM = document.querySelectorAll('.btn-container>button')
+buttonsDOM.forEach(function(clickedButtonDOM){
+  clickedButtonDOM.addEventListener('click',function(){
+    let select = clickedButtonDOM.getAttribute('data-id')
+    let selectedCategory = []
+    menu.map(function (params) {
+      if(params.category == select){
+        selectedCategory.push(params)
+      }else if(select == 'All'){
+        selectedCategory.push(params)
+      }
+    })
+    listele(selectedCategory)
+  })
+})
+
+function listele(selectedCategory){
+  let menuDOM = document.querySelector('#menu')
+  let html = ""
+  for (let index = 0; index < selectedCategory.length; index++) {
+      const element = selectedCategory[index];
+      html += `
+      <div class="menu-items col-lg-6 col-sm-12">
+            <img src="${element.img}" alt="${element.title}" class="photo">
+            <div class="menu-info">
+              <div class="menu-title">
+                <h4>${element.title}</h4>
+                <h4 class="price">${element.price}</h4>
+              </div>
+              <div class="menu-text">
+                ${element.desc}
+              </div>
+            </div>
+          </div>
+      `
+  }
+  menuDOM.innerHTML = html
+}
